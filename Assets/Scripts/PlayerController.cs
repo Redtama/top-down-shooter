@@ -20,6 +20,9 @@ public class PlayerController : MonoBehaviour
     {
         input = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
         movement = input * speed * Time.deltaTime;
-        transform.Translate(movement);
+        transform.Translate(movement, Space.World);
+
+        Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        transform.rotation = Quaternion.LookRotation(Vector3.forward, mousePos - transform.position);
     }
 }
