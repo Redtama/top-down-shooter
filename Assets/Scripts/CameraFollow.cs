@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class CameraFollow : MonoBehaviour
 {
-    public GameObject player;
+    public Transform player;
     public float speed;
 
     // Start is called before the first frame update
@@ -18,10 +18,10 @@ public class CameraFollow : MonoBehaviour
     {
         float interpolation = speed * Time.deltaTime;
 
-        Vector3 position = this.transform.position;
-        position.y = Mathf.Lerp(this.transform.position.y, player.transform.position.y, interpolation);
-        position.x = Mathf.Lerp(this.transform.position.x, player.transform.position.x, interpolation);
+        Vector3 position = transform.position;
+        position.y = Mathf.Lerp(transform.position.y, player.position.y, interpolation);
+        position.x = Mathf.Lerp(transform.position.x, player.position.x, interpolation);
 
-        this.transform.position = position;
+        transform.position = position;
     }
 }

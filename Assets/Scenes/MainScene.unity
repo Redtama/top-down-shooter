@@ -294,7 +294,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f11b2aaabf8b7ee4fb71f7ae6a69088d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 650176823}
+  player: {fileID: 650176824}
   speed: 5
 --- !u!20 &519420031
 Camera:
