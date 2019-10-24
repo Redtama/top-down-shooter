@@ -5,6 +5,7 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     public float speed;
+    public float blinkSpeed;
 
     Vector2 input;
     Vector2 movement;
@@ -22,7 +23,14 @@ public class PlayerController : MonoBehaviour
         movement = input * speed * Time.deltaTime;
         transform.Translate(movement, Space.World);
 
+        if (Input.GetKeyDown("space"))
+        {
+            transform.Translate(movement * blinkSpeed, Space.World);
+        }
+
         Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         transform.rotation = Quaternion.LookRotation(Vector3.forward, mousePos - transform.position);
+
+
     }
 }
