@@ -4,31 +4,13 @@ using UnityEngine;
 
 public class Weapon : MonoBehaviour
 {
-
-    public Transform firePoint;
     public float fireRate;
+    public float bulletSpeed;
     public GameObject bulletPrefab;
 
-    float nextFire = 0;
-
-    // Start is called before the first frame update
-    void Start()
+    public void Shoot(Transform firePoint)
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        while (Input.GetButton("Fire1") && Time.time > nextFire)
-        {
-            nextFire = Time.time + fireRate;
-            Shoot();
-        }
-    }
-
-    void Shoot()
-    {
-        Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
+        GameObject bullet = Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
+        bullet.GetComponent<Rigidbody2D>().velocity = bullet.transform.up * bulletSpeed;
     }
 }

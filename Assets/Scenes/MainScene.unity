@@ -363,7 +363,6 @@ GameObject:
   m_Component:
   - component: {fileID: 650176824}
   - component: {fileID: 650176825}
-  - component: {fileID: 650176826}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -401,22 +400,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 7
   blinkSpeed: 25
---- !u!114 &650176826
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 650176823}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3ff838a31ac6d7444aa6c771e0a9af54, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  weapon: {fileID: 2459849220975059589, guid: d0181f63cc5927142af567ee18d99883, type: 3}
   firePoint: {fileID: 39469947}
-  fireRate: 0.25
-  bulletPrefab: {fileID: 934679224322736844, guid: 775d15742fb3c914597c838218adeedb,
-    type: 3}
 --- !u!1 &717295994
 GameObject:
   m_ObjectHideFlags: 0

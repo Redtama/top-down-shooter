@@ -132,9 +132,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d0212e1a5ae933d48b30da6b4eafeeb9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  firePoint: {fileID: 0}
-  fireRate: 0
-  bulletPrefab: {fileID: 0}
-  destroyTime: 5
-  rb: {fileID: 392857696276807495}
-  bulletSpeed: 10
+  lifetime: 5
