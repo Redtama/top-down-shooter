@@ -48,7 +48,7 @@ public class PlayerController : MonoBehaviour
     {
         if (Input.GetButton("Fire1") && Time.time > nextFire)
         {
-            nextFire = Time.time + weapon.fireRate;
+            nextFire = Time.time + 1 / weapon.fireRate;
             weapon.Shoot(firePoint);
         }
     }
