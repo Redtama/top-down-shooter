@@ -295,7 +295,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 650176824}
-  speed: 5
+  smoothTime: 0.1
 --- !u!20 &519420031
 Camera:
   m_ObjectHideFlags: 0
