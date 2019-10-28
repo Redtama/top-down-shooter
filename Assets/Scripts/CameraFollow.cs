@@ -4,24 +4,33 @@ using UnityEngine;
 
 public class CameraFollow : MonoBehaviour
 {
-    public Transform player;
+    public GameObject player;
     public float smoothTime;
-    float yVelocity;
-    float xVelocity;
+    public float lookAheadDistance;
+
+    private Vector3 currentVelocity;
+    private Vector3 offset;
+    private Vector3 playerPos;
+    private Vector3 target;
+    private PlayerController playerController;
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        offset = new Vector3(0, 0, transform.position.z - player.transform.position.z);
+        playerController = player.GetComponent<PlayerController>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        Vector3 position = transform.position;
-        position.y = Mathf.SmoothDamp(transform.position.y, player.position.y, ref yVelocity, smoothTime);
-        position.x = Mathf.SmoothDamp(transform.position.x, player.position.x, ref xVelocity, smoothTime);
+        playerPos = player.transform.position;
 
-        transform.position = position;
+        Vector2 moveDir = playerController.input;
+        Vector2 lookDir = player.transform.up;
+
+        target = playerPos + offset + player.transform.up * lookAheadDistance;
+
+        transform.position = Vector3.SmoothDamp(transform.position, target, ref currentVelocity, smoothTime);
     }
 }
