@@ -34,49 +34,50 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         UpdateMovement();
-        UpdateShooting();                
+        UpdateShooting();
+    }
+
+    void FixedUpdate()
+    {
+        
     }
 
     void UpdateMovement()
     {
         input = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical")).normalized;
-        movement = input * speed * Time.deltaTime;
+        movement = input * speed * Time.fixedDeltaTime;
 
-        if (movement.magnitude > 0.001f)
+        if (movement.magnitude != 0)
         {
-            HandleCollisions();
-            transform.Translate(movement, Space.World);
+            TestCollisions();
+            transform.Translate(movement, Space.World);                      
         }        
-
-        if (Input.GetKeyDown("space"))
-        {
-            transform.Translate(movement * blinkSpeed, Space.World);
-        }
 
         Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         transform.rotation = Quaternion.LookRotation(Vector3.forward, mousePos - transform.position);
     }
 
-    void HandleCollisions()
+    void TestCollisions()
     {
-        float directionY = Mathf.Sign(movement.y);
-        float moveDistance = movement.magnitude;
-        float castDistance = moveDistance + skinWidth;
+        float castDistance = movement.magnitude + skinWidth;
 
         int hitCount = rb.Cast(movement.normalized, hitResults, castDistance);
-
-
+        
         for (int i = 0; i < hitCount; i++)
-        {            
+        {
             RaycastHit2D hit = hitResults[i];
 
-            float projection = Vector2.Dot(movement.normalized, hit.normal);
-            float slopeDirectionX = Mathf.Sign(hit.normal.x);
-            float slopeAngle = Vector2.Angle(hit.normal, Vector2.right * slopeDirectionX);
-
-            movement.x = moveDistance * Mathf.Sin(slopeAngle * Mathf.Deg2Rad) * slopeDirectionX;
-            movement.y = moveDistance * Mathf.Cos(slopeAngle * Mathf.Deg2Rad) * directionY;                        
-        }
+            Vector2 slopeNormal = hit.normal;
+            Vector2 slopePathTest = Vector2.Perpendicular(hit.normal);
+            if (Vector2.Dot(movement, slopePathTest) > 0)
+            {
+                movement = slopePathTest * Vector2.Dot(movement.normalized, slopePathTest) * movement.magnitude;                    
+            }
+            else
+            {
+                movement = -slopePathTest * Vector2.Dot(movement.normalized, -slopePathTest) * movement.magnitude;                    
+            }
+        }        
     }
 
     void UpdateShooting()
