@@ -4,93 +4,123 @@ using UnityEngine;
 
 public class ZombieController : MonoBehaviour
 {
-    bool trackingPlayer = false;
-    bool arrivedAtLocation = true;
-    Vector2 travelLocation;
-    Vector2 travelDirection;
-    Vector2 movement;
-    private RaycastHit2D[] hitResults = new RaycastHit2D[16];
+    public Transform player;
     private Rigidbody2D rb;
-    private float skinWidth = 0.01f;
 
-    public GameObject player;
-    public GameObject zombie;
-    public float sightRange;
-    public float speed;
+    private RaycastHit2D[] hitResults = new RaycastHit2D[16];
+    
+    public float walkSpeed;
+    public float runSpeed;    
+    public float aquisitionRange;
+    public float sightRange;    
+    public float idleTime;   
     public float castRange;
+    public float minRange;
+    public float skinWidth;
 
-    // Start is called before the first frame update
+    public Vector2 movement;
+    public Vector2 walkLocation;
+    public bool trackingPlayer;
+    public bool isIdle;
+    public float startedIdling;
+
+    // Start is called before the first frame updatewa
     void Start()
     {
-        rb = GetComponent<Rigidbody2D>();
+        rb = GetComponent<Rigidbody2D>();        
+        isIdle = true;
+        trackingPlayer = false;
+        startedIdling = Time.time;
     }
 
     // Update is called once per frame
     void Update()
     {
         LookForPlayer();
-        if (trackingPlayer) TrackPlayer();
-        else
+        //check if zombie is already following the player
+        if (trackingPlayer)
         {
-            if (arrivedAtLocation) SearchForLocation();
-            else ZombieMove();
-            Debug.Log(travelLocation);
-        }
-    }
-
-    void IsSearching()
-    {
-        //zombie searching in radius for player
-        if (arrivedAtLocation)
-        {
-            SearchForLocation();
-        }
-        ZombieMove();
-    }
-
-    void SearchForLocation()
-    {          
-        travelDirection = Random.insideUnitCircle;
-        int hitCount = rb.Cast(travelDirection, hitResults, castRange);
-        if (hitCount != 0)
-        {
-            travelLocation = travelDirection * hitResults[Random.Range(0, hitCount)].distance;
-        }
-        else
-        {
-            travelLocation = travelDirection * Random.Range(0, castRange);
-        }
-        arrivedAtLocation = false;
-    }
-
-    void TrackPlayer()
-    {
-        //some nasty pathfinding to player
-    }
-
-    void ZombieMove()
-    {
-        movement = travelDirection * speed * Time.fixedDeltaTime;
-        if (movement.magnitude != 0)
-        {
-            TestCollisions();
-            transform.Translate(movement, Space.World);
-            if (Mathf.Abs(travelLocation.x - zombie.transform.position.x) < 0.05 || Mathf.Abs(travelLocation.y - zombie.transform.position.y) < 0.05)
+            //if the player moves out of the zombies sight range, then make trackingPlayer false
+            if (Vector2.Distance(player.position, transform.position) > sightRange)
             {
-                arrivedAtLocation = true;
+                trackingPlayer = false;
             }
+            else
+            {
+                MoveToPlayer();
+            }
+        }
+
+        //check if zombie is idle
+        if (isIdle)
+        {
+            UpdateIdle();
+        }
+        else
+        {
+            MoveToLocation();
+        }
+    }
+
+    void MoveToPlayer()
+    {
+        movement = Vector2.MoveTowards(new Vector2(transform.position.x, transform.position.y), new Vector2(player.position.x, player.position.y), runSpeed * Time.deltaTime);
+        transform.position = movement;
+    }
+
+    void UpdateIdle()
+    {
+        if (Time.time > startedIdling + idleTime)
+        {
+            IdleAnimate();
+        }
+        else
+        {
+            SetNewLocation();
+            isIdle = false;
+        }
+    }
+
+    void IdleAnimate()
+    {
+        //rotate a bit randomly
+    }
+
+    void SetNewLocation()
+    {
+        Vector2 travelDirection = Random.insideUnitCircle;
+        int hitCount = rb.Cast(travelDirection, hitResults, castRange);
+        if (hitCount == 0)
+        {
+            walkLocation = travelDirection * Random.Range(minRange, castRange);
+        }
+        else
+        {
+            walkLocation = travelDirection * hitResults[Random.Range(Mathf.RoundToInt(minRange), hitCount)].distance;
+        }
+    }
+
+    void MoveToLocation()
+    {
+        movement = Vector2.MoveTowards(new Vector2(transform.position.x, transform.position.y), walkLocation, walkSpeed * Time.deltaTime);
+        transform.position = movement;
+        if (transform.position.x == walkLocation.x && transform.position.y == walkLocation.y)
+        {
+            isIdle = true;
+            startedIdling = Time.time;
         }
     }
 
     void LookForPlayer()
     {
-        if (Vector2.Distance(player.transform.position, zombie.transform.position) <= sightRange)
+        if (Vector2.Distance(player.transform.position, transform.position) <= aquisitionRange)
         {
+            Debug.Log(Vector2.Distance(player.transform.position, transform.position));
             trackingPlayer = true;
         }
     }
 
-    void TestCollisions()
+    void CheckCollision()
     {
         float castDistance = movement.magnitude + skinWidth;
 

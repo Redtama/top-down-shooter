@@ -41,7 +41,7 @@ public class Unit : MonoBehaviour
             }
             Vector2 wayPoint = currentWaypoint;
             wayPoint.Normalize();
-            transform.Translate(wayPoint * speed, Space.World);
+            transform.Translate(wayPoint * speed, Space.Self);
             yield return null;
         }
     }
