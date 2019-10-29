@@ -17,6 +17,7 @@ public class ZombieController : MonoBehaviour
     public GameObject zombie;
     public float sightRange;
     public float speed;
+    public float castRange;
 
     // Start is called before the first frame update
     void Start()
@@ -33,6 +34,7 @@ public class ZombieController : MonoBehaviour
         {
             if (arrivedAtLocation) SearchForLocation();
             else ZombieMove();
+            Debug.Log(travelLocation);
         }
     }
 
@@ -49,9 +51,16 @@ public class ZombieController : MonoBehaviour
     void SearchForLocation()
     {          
         travelDirection = Random.insideUnitCircle;
-        travelDirection.Normalize();
-        int hitCount = rb.Cast(travelDirection, hitResults);
-        travelLocation = travelDirection * hitResults[Random.Range(0, hitCount)].distance;              
+        int hitCount = rb.Cast(travelDirection, hitResults, castRange);
+        if (hitCount != 0)
+        {
+            travelLocation = travelDirection * hitResults[Random.Range(0, hitCount)].distance;
+        }
+        else
+        {
+            travelLocation = travelDirection * Random.Range(0, castRange);
+        }
+        arrivedAtLocation = false;
     }
 
     void TrackPlayer()
@@ -66,6 +75,10 @@ public class ZombieController : MonoBehaviour
         {
             TestCollisions();
             transform.Translate(movement, Space.World);
+            if (Mathf.Abs(travelLocation.x - zombie.transform.position.x) < 0.05 || Mathf.Abs(travelLocation.y - zombie.transform.position.y) < 0.05)
+            {
+                arrivedAtLocation = true;
+            }
         }
     }
 

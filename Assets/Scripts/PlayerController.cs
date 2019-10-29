@@ -23,6 +23,12 @@ public class PlayerController : MonoBehaviour
     private RaycastHit2D[] hitResults = new RaycastHit2D[16];
     private float skinWidth = 0.01f;
 
+
+    void Awake()
+    {
+        
+    }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -37,11 +43,7 @@ public class PlayerController : MonoBehaviour
         UpdateShooting();
     }
 
-    void FixedUpdate()
-    {
-        
-    }
-
+    
     void UpdateMovement()
     {
         input = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical")).normalized;
@@ -49,7 +51,7 @@ public class PlayerController : MonoBehaviour
 
         if (movement.magnitude != 0)
         {
-            TestCollisions();
+            CheckCollision();
             transform.Translate(movement, Space.World);                      
         }        
 
@@ -57,7 +59,7 @@ public class PlayerController : MonoBehaviour
         transform.rotation = Quaternion.LookRotation(Vector3.forward, mousePos - transform.position);
     }
 
-    void TestCollisions()
+    void CheckCollision()
     {
         float castDistance = movement.magnitude + skinWidth;
 
