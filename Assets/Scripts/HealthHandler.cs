@@ -10,4 +10,9 @@ public class HealthHandler : MonoBehaviour
     {
         health = _health;
     }
+
+    void RemoveHealth(int damage)
+    {
+
+    }
 }

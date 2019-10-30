@@ -47,21 +47,24 @@ public class ZombieController : MonoBehaviour
             if (Vector2.Distance(player.position, transform.position) > sightRange)
             {
                 trackingPlayer = false;
+                SetNewLocation();
             }
             else
             {
                 MoveToPlayer();
             }
         }
-
-        //check if zombie is idle
-        if (isIdle)
-        {
-            UpdateIdle();
-        }
         else
         {
-            MoveToLocation();
+            //check if zombie is idle
+            if (isIdle)
+            {
+                UpdateIdle();
+            }
+            else
+            {
+                MoveToLocation();
+            }
         }
     }
 
