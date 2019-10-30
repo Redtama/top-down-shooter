@@ -9,7 +9,6 @@ public class ZombieController : MonoBehaviour
     private Rigidbody2D rb;
 
     public RaycastHit2D[] hitResults = new RaycastHit2D[16];
-    public int hitCount;
     
     public float walkSpeed;
     public float runSpeed;    
@@ -95,11 +94,11 @@ public class ZombieController : MonoBehaviour
     void SetNewLocation()
     {
         Vector2 travelDirection = Random.insideUnitCircle;
-        hitCount = rb.Cast(travelDirection, hitResults, maxIdleWalkRange);
+        int hitCount = rb.Cast(travelDirection, hitResults, maxIdleWalkRange);
         if (hitCount == 0)
         {
             Debug.Log("in first if");
-            walkLocation = travelDirection * Random.Range(minIdleWalkRange, maxIdleWalkRange);
+            walkLocation = (Vector2)transform.position + travelDirection * Random.Range(minIdleWalkRange, maxIdleWalkRange);
         }
         else
         {
@@ -113,7 +112,7 @@ public class ZombieController : MonoBehaviour
                 else
                 {
                     Debug.Log("in else");
-                    walkLocation = travelDirection * Random.Range(minIdleWalkRange, hitResults[i].distance);
+                    walkLocation = (Vector2)transform.position + travelDirection * Random.Range(minIdleWalkRange, hitResults[i].distance);
                 }
             }
         }
@@ -121,12 +120,14 @@ public class ZombieController : MonoBehaviour
 
     void MoveToLocation()
     {
-        Vector2 direction = (walkLocation - new Vector2(transform.position.x, transform.position.y)).normalized;
-        movement = direction * walkSpeed * Time.deltaTime;
+        Vector2 currentPos = transform.position;
+        Vector2 newPos = Vector2.MoveTowards(currentPos, walkLocation, walkSpeed * Time.deltaTime);
+        movement = newPos - currentPos;
+
         collisionHandler.HandleCollisions(rb, ref movement, skinWidth);
         transform.Translate(movement, Space.World);
-
-        if (Mathf.Round(transform.position.x) == Mathf.Round(walkLocation.x) && Mathf.Round(transform.position.y) == Mathf.Round(walkLocation.y))
+                
+        if (currentPos == walkLocation)
         {
             isIdle = true;
             startedIdling = Time.time;
