@@ -24,7 +24,7 @@ public class ZombieController : MonoBehaviour
     public bool isIdle;
     public float startedIdling;
 
-    // Start is called before the first frame updatewa
+    // Start is called before the first frame update
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();        
@@ -64,8 +64,10 @@ public class ZombieController : MonoBehaviour
 
     void MoveToPlayer()
     {
-        movement = Vector2.MoveTowards(new Vector2(transform.position.x, transform.position.y), new Vector2(player.position.x, player.position.y), runSpeed * Time.deltaTime);
-        transform.position = movement;
+        Vector2 direction = (player.transform.position - transform.position).normalized;
+        movement = direction * runSpeed * Time.deltaTime;
+        CollisionHandler.HandleCollisions(rb, ref movement, skinWidth);
+        transform.Translate(movement, Space.World);
     }
 
     void UpdateIdle()
@@ -102,8 +104,10 @@ public class ZombieController : MonoBehaviour
 
     void MoveToLocation()
     {
-        movement = Vector2.MoveTowards(new Vector2(transform.position.x, transform.position.y), walkLocation, walkSpeed * Time.deltaTime);
-        transform.position = movement;
+        Vector2 direction = (walkLocation - new Vector2(transform.position.x, transform.position.y)).normalized;
+        movement = direction * walkSpeed * Time.deltaTime;
+        CollisionHandler.HandleCollisions(rb, ref movement, skinWidth);
+        transform.Translate(movement, Space.World);
         if (transform.position.x == walkLocation.x && transform.position.y == walkLocation.y)
         {
             isIdle = true;
@@ -117,29 +121,6 @@ public class ZombieController : MonoBehaviour
         {
             Debug.Log(Vector2.Distance(player.transform.position, transform.position));
             trackingPlayer = true;
-        }
-    }
-
-    void CheckCollision()
-    {
-        float castDistance = movement.magnitude + skinWidth;
-
-        int hitCount = rb.Cast(movement.normalized, hitResults, castDistance);
-
-        for (int i = 0; i < hitCount; i++)
-        {
-            RaycastHit2D hit = hitResults[i];
-
-            Vector2 slopeNormal = hit.normal;
-            Vector2 slopePathTest = Vector2.Perpendicular(hit.normal);
-            if (Vector2.Dot(movement, slopePathTest) > 0)
-            {
-                movement = slopePathTest * Vector2.Dot(movement.normalized, slopePathTest) * movement.magnitude;
-            }
-            else
-            {
-                movement = -slopePathTest * Vector2.Dot(movement.normalized, -slopePathTest) * movement.magnitude;
-            }
         }
     }
 }

@@ -32,7 +32,6 @@ public class PlayerController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Debug.Log("PlayerController Initialised");
         rb = GetComponent<Rigidbody2D>();
     }
 
@@ -42,12 +41,11 @@ public class PlayerController : MonoBehaviour
         UpdateMovement();
         UpdateShooting();
     }
-
     
     void UpdateMovement()
     {
         input = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical")).normalized;
-        movement = input * speed * Time.fixedDeltaTime;
+        movement = input * speed * Time.deltaTime;
 
         if (movement.magnitude != 0)
         {
