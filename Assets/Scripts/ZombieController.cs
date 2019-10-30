@@ -8,22 +8,23 @@ public class ZombieController : MonoBehaviour
     public Transform player;
     private Rigidbody2D rb;
 
-    private RaycastHit2D[] hitResults = new RaycastHit2D[16];
+    public RaycastHit2D[] hitResults = new RaycastHit2D[16];
+    public int hitCount;
     
     public float walkSpeed;
     public float runSpeed;    
     public float acquisitionRange;
     public float sightRange;    
     public float idleTime;   
-    public float castRange;
-    public float minRange;
+    public float maxIdleWalkRange;
+    public float minIdleWalkRange;
 
     private float skinWidth = 0.01f;
     private Vector2 movement;
-    private Vector2 walkLocation;
+    public Vector2 walkLocation;
     private bool trackingPlayer;
-    private bool isIdle;
-    private float startedIdling;
+    public bool isIdle;
+    public float startedIdling;
     private CollisionHandler collisionHandler;
 
     // Start is called before the first frame update
@@ -75,7 +76,7 @@ public class ZombieController : MonoBehaviour
 
     void UpdateIdle()
     {
-        if (Time.time > startedIdling + idleTime)
+        if (Time.time < startedIdling + idleTime)
         {
             IdleAnimate();
         }
@@ -94,14 +95,27 @@ public class ZombieController : MonoBehaviour
     void SetNewLocation()
     {
         Vector2 travelDirection = Random.insideUnitCircle;
-        int hitCount = rb.Cast(travelDirection, hitResults, castRange);
+        hitCount = rb.Cast(travelDirection, hitResults, maxIdleWalkRange);
         if (hitCount == 0)
         {
-            walkLocation = travelDirection * Random.Range(minRange, castRange);
+            Debug.Log("in first if");
+            walkLocation = travelDirection * Random.Range(minIdleWalkRange, maxIdleWalkRange);
         }
         else
         {
-            walkLocation = travelDirection * hitResults[Random.Range(Mathf.RoundToInt(minRange), hitCount)].distance;
+            for (int i = 0; i < hitCount; i++)
+            {
+                if (hitResults[i].distance < minIdleWalkRange)
+                {
+                    Debug.Log("in if");
+                    SetNewLocation();
+                }
+                else
+                {
+                    Debug.Log("in else");
+                    walkLocation = travelDirection * Random.Range(minIdleWalkRange, hitResults[i].distance);
+                }
+            }
         }
     }
 
@@ -112,7 +126,7 @@ public class ZombieController : MonoBehaviour
         collisionHandler.HandleCollisions(rb, ref movement, skinWidth);
         transform.Translate(movement, Space.World);
 
-        if (transform.position.x == walkLocation.x && transform.position.y == walkLocation.y)
+        if (Mathf.Round(transform.position.x) == Mathf.Round(walkLocation.x) && Mathf.Round(transform.position.y) == Mathf.Round(walkLocation.y))
         {
             isIdle = true;
             startedIdling = Time.time;
@@ -122,8 +136,7 @@ public class ZombieController : MonoBehaviour
     void LookForPlayer()
     {
         if (Vector2.Distance(player.transform.position, transform.position) <= acquisitionRange)
-        {
-            Debug.Log(Vector2.Distance(player.transform.position, transform.position));
+        {            
             trackingPlayer = true;
         }
     }
