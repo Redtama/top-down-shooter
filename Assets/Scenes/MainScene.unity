@@ -446,6 +446,7 @@ GameObject:
   - component: {fileID: 650176825}
   - component: {fileID: 650176827}
   - component: {fileID: 650176826}
+  - component: {fileID: 650176828}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -523,6 +524,18 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 1
   m_Constraints: 0
+--- !u!114 &650176828
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 650176823}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b882fb49dbd66a4ebe8dc04bd85c8ce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &717295994
 GameObject:
   m_ObjectHideFlags: 0
@@ -615,6 +628,7 @@ GameObject:
   - component: {fileID: 1104075070}
   - component: {fileID: 1104075069}
   - component: {fileID: 1104075071}
+  - component: {fileID: 1104075073}
   m_Layer: 0
   m_Name: Zombie
   m_TagString: Untagged
@@ -684,17 +698,11 @@ MonoBehaviour:
   player: {fileID: 650176824}
   walkSpeed: 1
   runSpeed: 5
-  aquisitionRange: 3
-  sightRange: 5
+  acquisitionRange: 5
+  sightRange: 7
   idleTime: 1
   castRange: 5
   minRange: 2
-  skinWidth: 0.1
-  movement: {x: 0, y: 0}
-  walkLocation: {x: 0, y: 0}
-  trackingPlayer: 0
-  isIdle: 0
-  startedIdling: 0
 --- !u!4 &1104075072
 Transform:
   m_ObjectHideFlags: 0
@@ -710,6 +718,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1104075073
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1104075068}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b882fb49dbd66a4ebe8dc04bd85c8ce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1266929614
 GameObject:
   m_ObjectHideFlags: 0
@@ -754,7 +774,7 @@ BoxCollider2D:
   m_AutoTiling: 0
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
-  m_EdgeRadius: 0.1
+  m_EdgeRadius: 0
 --- !u!23 &1266929616
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -1045,7 +1065,7 @@ BoxCollider2D:
   m_AutoTiling: 0
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
-  m_EdgeRadius: 0.1
+  m_EdgeRadius: 0
 --- !u!23 &1508835601
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -1260,7 +1280,7 @@ BoxCollider2D:
   m_AutoTiling: 0
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
-  m_EdgeRadius: 0.1
+  m_EdgeRadius: 0
 --- !u!23 &2078323502
 MeshRenderer:
   m_ObjectHideFlags: 0

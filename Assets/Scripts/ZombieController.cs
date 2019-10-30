@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(CollisionHandler))]
 public class ZombieController : MonoBehaviour
 {
     public Transform player;
@@ -11,23 +12,25 @@ public class ZombieController : MonoBehaviour
     
     public float walkSpeed;
     public float runSpeed;    
-    public float aquisitionRange;
+    public float acquisitionRange;
     public float sightRange;    
     public float idleTime;   
     public float castRange;
     public float minRange;
-    public float skinWidth;
 
-    public Vector2 movement;
-    public Vector2 walkLocation;
-    public bool trackingPlayer;
-    public bool isIdle;
-    public float startedIdling;
+    private float skinWidth = 0.01f;
+    private Vector2 movement;
+    private Vector2 walkLocation;
+    private bool trackingPlayer;
+    private bool isIdle;
+    private float startedIdling;
+    private CollisionHandler collisionHandler;
 
     // Start is called before the first frame update
     void Start()
     {
-        rb = GetComponent<Rigidbody2D>();        
+        rb = GetComponent<Rigidbody2D>();
+        collisionHandler = GetComponent<CollisionHandler>();
         isIdle = true;
         trackingPlayer = false;
         startedIdling = Time.time;
@@ -66,7 +69,7 @@ public class ZombieController : MonoBehaviour
     {
         Vector2 direction = (player.transform.position - transform.position).normalized;
         movement = direction * runSpeed * Time.deltaTime;
-        CollisionHandler.HandleCollisions(rb, ref movement, skinWidth);
+        collisionHandler.HandleCollisions(rb, ref movement, skinWidth);
         transform.Translate(movement, Space.World);
     }
 
@@ -106,8 +109,9 @@ public class ZombieController : MonoBehaviour
     {
         Vector2 direction = (walkLocation - new Vector2(transform.position.x, transform.position.y)).normalized;
         movement = direction * walkSpeed * Time.deltaTime;
-        CollisionHandler.HandleCollisions(rb, ref movement, skinWidth);
+        collisionHandler.HandleCollisions(rb, ref movement, skinWidth);
         transform.Translate(movement, Space.World);
+
         if (transform.position.x == walkLocation.x && transform.position.y == walkLocation.y)
         {
             isIdle = true;
@@ -117,7 +121,7 @@ public class ZombieController : MonoBehaviour
 
     void LookForPlayer()
     {
-        if (Vector2.Distance(player.transform.position, transform.position) <= aquisitionRange)
+        if (Vector2.Distance(player.transform.position, transform.position) <= acquisitionRange)
         {
             Debug.Log(Vector2.Distance(player.transform.position, transform.position));
             trackingPlayer = true;

@@ -2,9 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CollisionHandler
+public class CollisionHandler : MonoBehaviour
 {
-    public static RaycastHit2D[] HandleCollisions(Rigidbody2D rb, ref Vector2 movement, float skinWidth)
+    [HideInInspector]
+    public RaycastHit2D[] hitResults = new RaycastHit2D[16];
+
+    private bool collidedLastFrame = false;    
+
+    public void HandleCollisions(Rigidbody2D rb, ref Vector2 movement, float skinWidth)
     {
         float castDistance = movement.magnitude + skinWidth;
         RaycastHit2D[] hitResults = new RaycastHit2D[16];
@@ -13,14 +18,23 @@ public class CollisionHandler
 
         for (int i = 0; i < hitCount; i++)
         {
-            RaycastHit2D hit = hitResults[i];
-
-            Vector2 slopeNormal = hit.normal;
+            RaycastHit2D hit = hitResults[i];            
             Vector2 slopeParallel = Vector2.Perpendicular(hit.normal);
             Vector2 newDirection = Mathf.Sign(Vector2.Dot(movement, slopeParallel)) * slopeParallel;
             
-            movement = newDirection * Vector2.Dot(movement.normalized, newDirection) * movement.magnitude;
+            // If we're already touching the slope then move along it.
+            if (collidedLastFrame)
+            {
+                movement = newDirection * Vector2.Dot(movement.normalized, newDirection) * movement.magnitude;
+            }
+            // Otherwise close the distance to the slope.
+            else
+            {
+                float distanceToSlope = hit.distance - skinWidth;
+                movement = movement.normalized * distanceToSlope;
+            }
         }
-        return hitResults;
+
+        collidedLastFrame = hitCount != 0;
     }
 }
