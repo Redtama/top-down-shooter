@@ -51,35 +51,12 @@ public class PlayerController : MonoBehaviour
 
         if (movement.magnitude != 0)
         {
-            CheckCollision();
+            CollisionHandler.HandleCollisions(rb, ref movement, skinWidth);
             transform.Translate(movement, Space.World);                      
         }        
 
         Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         transform.rotation = Quaternion.LookRotation(Vector3.forward, mousePos - transform.position);
-    }
-
-    void CheckCollision()
-    {
-        float castDistance = movement.magnitude + skinWidth;
-
-        int hitCount = rb.Cast(movement.normalized, hitResults, castDistance);
-        
-        for (int i = 0; i < hitCount; i++)
-        {
-            RaycastHit2D hit = hitResults[i];
-
-            Vector2 slopeNormal = hit.normal;
-            Vector2 slopePathTest = Vector2.Perpendicular(hit.normal);
-            if (Vector2.Dot(movement, slopePathTest) > 0)
-            {
-                movement = slopePathTest * Vector2.Dot(movement.normalized, slopePathTest) * movement.magnitude;                    
-            }
-            else
-            {
-                movement = -slopePathTest * Vector2.Dot(movement.normalized, -slopePathTest) * movement.magnitude;                    
-            }
-        }        
     }
 
     void UpdateShooting()
