@@ -20,20 +20,21 @@ public class ZombieController : MonoBehaviour
 
     private float skinWidth = 0.01f;
     private Vector2 movement;
-    public Vector2 walkLocation;
+    private Vector2 walkLocation;
     private bool trackingPlayer;
-    public bool isIdle;
-    public float startedIdling;
     private CollisionHandler collisionHandler;
+    private IEnumerator wanderCoroutine;
+    private IEnumerator currentMoveCoroutine;
 
     // Start is called before the first frame update
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         collisionHandler = GetComponent<CollisionHandler>();
-        isIdle = true;
         trackingPlayer = false;
-        startedIdling = Time.time;
+
+        wanderCoroutine = WanderAround();
+        StartCoroutine(wanderCoroutine);
     }
 
     // Update is called once per frame
@@ -43,28 +44,48 @@ public class ZombieController : MonoBehaviour
         //check if zombie is already following the player
         if (trackingPlayer)
         {
+            if (wanderCoroutine != null)
+            {
+                StopCoroutine(wanderCoroutine);
+                StopCoroutine(currentMoveCoroutine);
+            }
+
             //if the player moves out of the zombies sight range, then make trackingPlayer false
             if (Vector2.Distance(player.position, transform.position) > sightRange)
             {
                 trackingPlayer = false;
-                SetNewLocation();
+                StartCoroutine(wanderCoroutine);
             }
             else
             {
                 MoveToPlayer();
             }
         }
-        else
+    }
+
+    IEnumerator WanderAround()
+    {
+        while (!trackingPlayer)
+        { 
+            SetNewLocation();
+            print(walkLocation);
+            currentMoveCoroutine = Move(walkLocation, walkSpeed);
+            yield return StartCoroutine(currentMoveCoroutine);
+            yield return new WaitForSeconds(idleTime);
+        }
+    }
+
+    IEnumerator Move(Vector2 destination, float speed)
+    {
+        Vector2 currentPos = transform.position;
+        while (currentPos != destination)
         {
-            //check if zombie is idle
-            if (isIdle)
-            {
-                UpdateIdle();
-            }
-            else
-            {
-                MoveToLocation();
-            }
+            Vector2 newPos = Vector2.MoveTowards(currentPos, walkLocation, walkSpeed * Time.deltaTime);
+            movement = newPos - currentPos;
+            collisionHandler.HandleCollisions(rb, ref movement, skinWidth);
+            transform.Translate(movement, Space.World);
+            currentPos = transform.position;
+            yield return null;
         }
     }
 
@@ -76,31 +97,12 @@ public class ZombieController : MonoBehaviour
         transform.Translate(movement, Space.World);
     }
 
-    void UpdateIdle()
-    {
-        if (Time.time < startedIdling + idleTime)
-        {
-            IdleAnimate();
-        }
-        else
-        {
-            SetNewLocation();
-            isIdle = false;
-        }
-    }
-
-    void IdleAnimate()
-    {
-        //rotate a bit randomly
-    }
-
     void SetNewLocation()
     {
         Vector2 travelDirection = Random.insideUnitCircle;
         int hitCount = rb.Cast(travelDirection, hitResults, maxIdleWalkRange);
         if (hitCount == 0)
         {
-            Debug.Log("in first if");
             walkLocation = (Vector2)transform.position + travelDirection * Random.Range(minIdleWalkRange, maxIdleWalkRange);
         }
         else
@@ -109,31 +111,13 @@ public class ZombieController : MonoBehaviour
             {
                 if (hitResults[i].distance < minIdleWalkRange)
                 {
-                    Debug.Log("in if");
                     SetNewLocation();
                 }
                 else
                 {
-                    Debug.Log("in else");
                     walkLocation = (Vector2)transform.position + travelDirection * Random.Range(minIdleWalkRange, hitResults[i].distance);
                 }
             }
-        }
-    }
-
-    void MoveToLocation()
-    {
-        Vector2 currentPos = transform.position;
-        Vector2 newPos = Vector2.MoveTowards(currentPos, walkLocation, walkSpeed * Time.deltaTime);
-        movement = newPos - currentPos;
-
-        collisionHandler.HandleCollisions(rb, ref movement, skinWidth);
-        transform.Translate(movement, Space.World);
-                
-        if (currentPos == walkLocation)
-        {
-            isIdle = true;
-            startedIdling = Time.time;
         }
     }
 
