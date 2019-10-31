@@ -7,14 +7,22 @@ public class CollisionHandler : MonoBehaviour
     [HideInInspector]
     public RaycastHit2D[] hitResults = new RaycastHit2D[16];
 
-    private bool collidedLastFrame = false;    
+    private ContactFilter2D contactFilter;
+    private bool collidedLastFrame = false;
+
+    void Start()
+    {
+        contactFilter.useTriggers = false;
+        contactFilter.SetLayerMask(Physics2D.GetLayerCollisionMask(gameObject.layer));
+        contactFilter.useLayerMask = true;
+    }
 
     public void HandleCollisions(Rigidbody2D rb, ref Vector2 movement, float skinWidth)
     {
         float castDistance = movement.magnitude + skinWidth;
         RaycastHit2D[] hitResults = new RaycastHit2D[16];
 
-        int hitCount = rb.Cast(movement.normalized, hitResults, castDistance);
+        int hitCount = rb.Cast(movement.normalized, contactFilter, hitResults, castDistance);
 
         for (int i = 0; i < hitCount; i++)
         {

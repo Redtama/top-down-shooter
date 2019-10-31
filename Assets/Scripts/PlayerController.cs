@@ -60,6 +60,7 @@ public class PlayerController : MonoBehaviour
         {
             nextFire = Time.time + 1 / weapon.fireRate;
             weapon.Shoot(firePoint);
+            GetComponent<AudioSource>().Play();
         }
     }
 }

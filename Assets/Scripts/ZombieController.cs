@@ -100,7 +100,6 @@ public class ZombieController : MonoBehaviour
         int hitCount = rb.Cast(travelDirection, hitResults, maxIdleWalkRange);
         if (hitCount == 0)
         {
-            Debug.Log("in first if");
             walkLocation = (Vector2)transform.position + travelDirection * Random.Range(minIdleWalkRange, maxIdleWalkRange);
         }
         else
@@ -109,12 +108,10 @@ public class ZombieController : MonoBehaviour
             {
                 if (hitResults[i].distance < minIdleWalkRange)
                 {
-                    Debug.Log("in if");
                     SetNewLocation();
                 }
                 else
                 {
-                    Debug.Log("in else");
                     walkLocation = (Vector2)transform.position + travelDirection * Random.Range(minIdleWalkRange, hitResults[i].distance);
                 }
             }
