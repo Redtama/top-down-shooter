@@ -70,8 +70,12 @@ public class ZombieController : MonoBehaviour
 
     void MoveToPlayer()
     {
-        Vector2 direction = (player.transform.position - transform.position).normalized;
+        Vector2 direction = (player.transform.position - transform.position).normalized;        
         movement = direction * runSpeed * Time.deltaTime;
+        if (movement != Vector2.zero)
+        {
+            transform.rotation = Quaternion.LookRotation(Vector3.forward, direction);
+        }        
         collisionHandler.HandleCollisions(rb, ref movement, skinWidth);
         transform.Translate(movement, Space.World);
     }
@@ -91,10 +95,16 @@ public class ZombieController : MonoBehaviour
 
     void IdleAnimate()
     {
-        //rotate a bit randomly
+ 
     }
 
     void SetNewLocation()
+    {
+        Vector2 travelDirection = Random.insideUnitCircle;
+        walkLocation = (Vector2)transform.position + travelDirection * Random.Range(minIdleWalkRange, maxIdleWalkRange);
+    }
+
+    void SetNewLocationOld()
     {
         Vector2 travelDirection = Random.insideUnitCircle;
         int hitCount = rb.Cast(travelDirection, hitResults, maxIdleWalkRange);
@@ -123,7 +133,10 @@ public class ZombieController : MonoBehaviour
         Vector2 currentPos = transform.position;
         Vector2 newPos = Vector2.MoveTowards(currentPos, walkLocation, walkSpeed * Time.deltaTime);
         movement = newPos - currentPos;
-
+        if (movement != Vector2.zero)
+        {
+            transform.rotation = Quaternion.LookRotation(Vector3.forward, new Vector3(newPos.x - currentPos.x, newPos.y - currentPos.y, 0));
+        }        
         collisionHandler.HandleCollisions(rb, ref movement, skinWidth);
         transform.Translate(movement, Space.World);
                 
