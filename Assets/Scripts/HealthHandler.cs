@@ -6,13 +6,21 @@ public class HealthHandler : MonoBehaviour
 {
     public int health;
 
-    public HealthHandler(int _health)
+    void Update()
     {
-        health = _health;
+        if (health <= 0)
+        {
+            Dead();
+        }
     }
 
-    void RemoveHealth(int damage)
+    public void ApplyDamage(int damage)
     {
+        health -= damage;
+    }
 
+    void Dead()
+    {
+        Destroy(gameObject);
     }
 }

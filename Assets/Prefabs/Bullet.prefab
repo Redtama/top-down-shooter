@@ -133,3 +133,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   lifetime: 5
+  weapon: {fileID: 2459849220975059589, guid: d0181f63cc5927142af567ee18d99883, type: 3}
