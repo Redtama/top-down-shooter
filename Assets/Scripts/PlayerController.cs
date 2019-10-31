@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -24,12 +23,14 @@ public class PlayerController : MonoBehaviour
     private RaycastHit2D[] hitResults = new RaycastHit2D[16];
     private float skinWidth = 0.01f;
     private CollisionHandler collisionHandler;
+    private AudioSource gunshot;
 
     // Start is called before the first frame update
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         collisionHandler = GetComponent<CollisionHandler>();
+        gunshot = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -60,7 +61,8 @@ public class PlayerController : MonoBehaviour
         {
             nextFire = Time.time + 1 / weapon.fireRate;
             weapon.Shoot(firePoint);
-            GetComponent<AudioSource>().Play();
+            gunshot.pitch = Random.Range(.95f, 1.05f);
+            gunshot.Play();
         }
     }
 }
