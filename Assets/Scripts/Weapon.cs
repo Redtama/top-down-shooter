@@ -4,15 +4,33 @@ using UnityEngine;
 
 public class Weapon : MonoBehaviour
 {
+    public Transform firePoint;
+    public Projectile projectilePrefab;
     public float fireRate;
-    public float bulletSpeed;
+    public float projectileSpeed;
     public int damage;
-    public GameObject bulletPrefab;
 
-    
-    public void Shoot(Transform firePoint)
+    private float nextShotTime;
+    private AudioSource gunshotSound;
+    private float originalPitch;
+
+    void Start()
     {
-        GameObject bullet = Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
-        bullet.GetComponent<Rigidbody2D>().velocity = bullet.transform.up * bulletSpeed;
+        gunshotSound = GetComponent<AudioSource>();
+        originalPitch = gunshotSound.pitch;
+    }
+
+    public void Shoot()
+    {
+        if (Time.time > nextShotTime)
+        {
+            nextShotTime = Time.time + 1 / fireRate;
+
+            Projectile projectile = Instantiate(projectilePrefab, firePoint.position, firePoint.rotation) as Projectile;
+            projectile.speed = projectileSpeed;
+
+            gunshotSound.pitch = Random.Range(originalPitch - 0.03f, originalPitch + 0.03f);
+            gunshotSound.Play();
+        }        
     }    
 }

@@ -21,12 +21,11 @@ public class DestroyHandler : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D col)
     {
-        GameObject collidedObject = GameObject.Find(col.name);
-        HealthHandler health = collidedObject.GetComponent<HealthHandler>();
+        HealthHandler health = col.GetComponent<HealthHandler>();
         if (health != null)
         {
             health.ApplyDamage(damage);
         }              
-        GameObject.Destroy(gameObject);
+        Destroy(gameObject);
     }
 }

@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 392857696276807495}
   - component: {fileID: 3802845487855643903}
   - component: {fileID: -4599851116135174516}
+  - component: {fileID: -1260214197451320668}
   m_Layer: 0
   m_Name: Bullet
   m_TagString: Untagged
@@ -28,8 +29,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 934679224322736844}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.78, z: 0}
-  m_LocalScale: {x: 0.1, y: 0.25, z: 0.1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.06, y: 0.2, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -134,3 +135,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   lifetime: 5
   weapon: {fileID: 2459849220975059589, guid: d0181f63cc5927142af567ee18d99883, type: 3}
+--- !u!114 &-1260214197451320668
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 934679224322736844}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 18bb49b229aeb9f4d87f0519a6e44135, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 0

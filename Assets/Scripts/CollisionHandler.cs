@@ -9,6 +9,7 @@ public class CollisionHandler : MonoBehaviour
 
     private ContactFilter2D contactFilter;
     private bool collidedLastFrame = false;
+    private Vector2 oldSlopeNormal = Vector2.zero;
 
     void Start()
     {
@@ -20,7 +21,6 @@ public class CollisionHandler : MonoBehaviour
     public void HandleCollisions(Rigidbody2D rb, ref Vector2 movement, float skinWidth)
     {
         float castDistance = movement.magnitude + skinWidth;
-        RaycastHit2D[] hitResults = new RaycastHit2D[16];
 
         int hitCount = rb.Cast(movement.normalized, contactFilter, hitResults, castDistance);
 
@@ -28,13 +28,15 @@ public class CollisionHandler : MonoBehaviour
         {
             RaycastHit2D hit = hitResults[i];            
             Vector2 slopeParallel = Vector2.Perpendicular(hit.normal);
-            Vector2 newDirection = Mathf.Sign(Vector2.Dot(movement, slopeParallel)) * slopeParallel;
+            Vector2 newDirection = Mathf.Sign(Vector2.Dot(movement, slopeParallel)) * slopeParallel;            
             
             // If we're already touching the slope then move along it.
-            if (collidedLastFrame)
+            if (collidedLastFrame && (oldSlopeNormal != hit.normal) || hitCount == 1)
             {
                 movement = newDirection * Vector2.Dot(movement.normalized, newDirection) * movement.magnitude;
+                oldSlopeNormal = hit.normal;
             }
+
             // Otherwise close the distance to the slope.
             else
             {

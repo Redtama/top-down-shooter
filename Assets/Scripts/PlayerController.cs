@@ -7,30 +7,25 @@ public class PlayerController : MonoBehaviour
 {
     [Header("Movement")] // All this does is tell Unity to put a Heading in the inspector. (Helps organise our variables in the inspector a bit.)
     public float speed;
-    public float blinkSpeed;
-
-    [Header("Weapon")]
-    public Weapon weapon;
-    public Transform firePoint;
+    public float blinkSpeed;    
 
     [HideInInspector]
     public Vector2 input;
 
     Vector2 movement;
-    float nextFire = 0;
 
     private Rigidbody2D rb;
     private RaycastHit2D[] hitResults = new RaycastHit2D[16];
     private float skinWidth = 0.01f;
     private CollisionHandler collisionHandler;
-    private AudioSource gunshot;
+    private WeaponController weaponController;
 
     // Start is called before the first frame update
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         collisionHandler = GetComponent<CollisionHandler>();
-        gunshot = GetComponent<AudioSource>();
+        weaponController = GetComponent<WeaponController>();
     }
 
     // Update is called once per frame
@@ -38,6 +33,16 @@ public class PlayerController : MonoBehaviour
     {
         UpdateMovement();
         UpdateShooting();
+
+        if (Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            weaponController.EquipWeapon(weaponController.primaryWeapon);
+        }
+
+        if (Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            weaponController.EquipWeapon(weaponController.secondaryWeapon);
+        }
     }
     
     void UpdateMovement()
@@ -57,12 +62,9 @@ public class PlayerController : MonoBehaviour
 
     void UpdateShooting()
     {
-        if (Input.GetButton("Fire1") && Time.time > nextFire)
+        if (Input.GetButton("Fire1"))
         {
-            nextFire = Time.time + 1 / weapon.fireRate;
-            weapon.Shoot(firePoint);
-            gunshot.pitch = Random.Range(.95f, 1.05f);
-            gunshot.Play();
+            weaponController.Shoot();
         }
     }
 }

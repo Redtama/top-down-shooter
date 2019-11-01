@@ -5,7 +5,6 @@ using UnityEngine;
 [RequireComponent(typeof(CollisionHandler))]
 public class ZombieController : MonoBehaviour
 {
-    public Transform player;
     private Rigidbody2D rb;
 
     public RaycastHit2D[] hitResults = new RaycastHit2D[16];
@@ -25,6 +24,7 @@ public class ZombieController : MonoBehaviour
     public bool isIdle;
     public float startedIdling;
     private CollisionHandler collisionHandler;
+    private Transform player;
 
     // Start is called before the first frame update
     void Start()
@@ -34,6 +34,7 @@ public class ZombieController : MonoBehaviour
         isIdle = true;
         trackingPlayer = false;
         startedIdling = Time.time;
+        player = GameObject.FindGameObjectWithTag("Player").transform;
     }
 
     // Update is called once per frame
