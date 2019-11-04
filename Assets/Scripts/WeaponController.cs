@@ -26,11 +26,11 @@ public class WeaponController : MonoBehaviour
         equippedWeapon = Instantiate(weapon, weaponHold);
     }
 
-    public void Shoot()
+    public void Shoot(Animator anim)
     {
         if (equippedWeapon != null)
         {
-            equippedWeapon.Shoot();
+            equippedWeapon.Shoot(anim);
         }
     }
 }

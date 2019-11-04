@@ -19,6 +19,7 @@ public class PlayerController : MonoBehaviour
     private float skinWidth = 0.01f;
     private CollisionHandler collisionHandler;
     private WeaponController weaponController;
+    public Animator anim;
 
     // Start is called before the first frame update
     void Start()
@@ -31,6 +32,7 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        anim = GetComponent<Animator>();
         UpdateMovement();
         UpdateShooting();
 
@@ -64,7 +66,7 @@ public class PlayerController : MonoBehaviour
     {
         if (Input.GetButton("Fire1"))
         {
-            weaponController.Shoot();
+            weaponController.Shoot(anim);
         }
     }
 }

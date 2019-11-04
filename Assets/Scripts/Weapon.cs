@@ -20,7 +20,7 @@ public class Weapon : MonoBehaviour
         originalPitch = gunshotSound.pitch;
     }
 
-    public void Shoot()
+    public void Shoot(Animator anim)
     {
         if (Time.time > nextShotTime)
         {
@@ -31,6 +31,8 @@ public class Weapon : MonoBehaviour
 
             gunshotSound.pitch = Random.Range(originalPitch - 0.03f, originalPitch + 0.03f);
             gunshotSound.Play();
+            Debug.Log(anim.parameters);
+            anim.SetTrigger("onFire");
         }        
     }    
 }
