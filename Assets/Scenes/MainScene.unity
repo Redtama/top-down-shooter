@@ -350,7 +350,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 210028856}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -1.1759999, y: 1.5, z: 0}
+  m_LocalPosition: {x: -1.1759999, y: 1.32, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 448998234}
@@ -441,7 +441,6 @@ GameObject:
   m_Component:
   - component: {fileID: 448998234}
   - component: {fileID: 448998235}
-  - component: {fileID: 448998236}
   m_Layer: 0
   m_Name: Left Arm
   m_TagString: Untagged
@@ -457,7 +456,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 448998233}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.0062, y: 0.042, z: 0}
+  m_LocalPosition: {x: -0.0062, y: 0.038, z: 0}
   m_LocalScale: {x: 0.05, y: 0.05, z: 0.05}
   m_Children:
   - {fileID: 210028857}
@@ -513,25 +512,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!95 &448998236
-Animator:
-  serializedVersion: 3
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 448998233}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 8fafdc1566d9ae54691327d60c4e1916, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -601,7 +581,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 2.55
+  orthographic size: 6.02
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -778,7 +758,7 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 0.5
+  m_Radius: 0.07
 --- !u!50 &650176827
 Rigidbody2D:
   serializedVersion: 4
@@ -822,7 +802,7 @@ Animator:
   m_GameObject: {fileID: 650176823}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 8fafdc1566d9ae54691327d60c4e1916, type: 2}
+  m_Controller: {fileID: 9100000, guid: aba3e40885103894d86b60c9c6267146, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -1480,7 +1460,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_LightType: 3
   m_BlendStyleIndex: 0
-  m_FalloffIntensity: 0.592
+  m_FalloffIntensity: 0.62
   m_Color: {r: 0.6226415, g: 0.46493626, b: 0.18503025, a: 1}
   m_Intensity: 2.06
   m_LightVolumeOpacity: 0.07
