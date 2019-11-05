@@ -26,10 +26,7 @@ public class Weapon : MonoBehaviour
         {
             nextShotTime = Time.time + 1 / fireRate;
 
-            Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            Quaternion fireRotation = Quaternion.LookRotation(Vector3.forward, mousePos - firePoint.position);
-
-            Projectile projectile = Instantiate(projectilePrefab, firePoint.position, fireRotation) as Projectile;
+            Projectile projectile = Instantiate(projectilePrefab, firePoint.position, firePoint.rotation) as Projectile;
             projectile.speed = projectileSpeed;
 
             gunshotSound.pitch = Random.Range(originalPitch - 0.03f, originalPitch + 0.03f);
