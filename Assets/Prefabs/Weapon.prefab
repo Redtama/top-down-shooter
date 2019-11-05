@@ -81,7 +81,7 @@ MonoBehaviour:
   projectilePrefab: {fileID: -1260214197451320668, guid: 775d15742fb3c914597c838218adeedb,
     type: 3}
   fireRate: 3
-  projectileSpeed: 40
+  projectileSpeed: 20
   damage: 100
 --- !u!82 &4690578164067597030
 AudioSource:
