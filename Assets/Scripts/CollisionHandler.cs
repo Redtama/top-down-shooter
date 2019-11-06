@@ -8,7 +8,7 @@ public class CollisionHandler : MonoBehaviour
     public RaycastHit2D[] hitResults = new RaycastHit2D[16];
 
     private ContactFilter2D contactFilter;
-    private bool collidedLastFrame = false;
+    private int contactsLastFrame = 0;
     private Vector2 oldSlopeNormal = Vector2.zero;
 
     void Start()
@@ -22,22 +22,20 @@ public class CollisionHandler : MonoBehaviour
     {
         float castDistance = movement.magnitude + skinWidth;
 
-        int hitCount = rb.Cast(movement.normalized, contactFilter, hitResults, castDistance);
+        int hitCount = rb.Cast(movement.normalized, contactFilter, hitResults, castDistance);     
 
-        for (int i = 0; i < hitCount; i++)
+        if (hitCount == 1)
         {
-            RaycastHit2D hit = hitResults[i];            
+            RaycastHit2D hit = hitResults[0];
             Vector2 slopeParallel = Vector2.Perpendicular(hit.normal);
-            Vector2 newDirection = Mathf.Sign(Vector2.Dot(movement, slopeParallel)) * slopeParallel;            
-            
+            Vector2 newDirection = Mathf.Sign(Vector2.Dot(movement, slopeParallel)) * slopeParallel;
+
             // If we're already touching the slope then move along it.
-            if (collidedLastFrame && (oldSlopeNormal != hit.normal) || hitCount == 1)
+            if (contactsLastFrame > 0)
             {
                 movement = newDirection * Vector2.Dot(movement.normalized, newDirection) * movement.magnitude;
-                oldSlopeNormal = hit.normal;
             }
-
-            // Otherwise close the distance to the slope.
+            // Otherwise, close the distance to the slope.
             else
             {
                 float distanceToSlope = hit.distance - skinWidth;
@@ -45,6 +43,27 @@ public class CollisionHandler : MonoBehaviour
             }
         }
 
-        collidedLastFrame = hitCount != 0;
+        if (hitCount == 2)
+        {
+            RaycastHit2D hit1 = hitResults[0];
+            RaycastHit2D hit2 = hitResults[1];
+
+            // If we're already in the corner then work out what to do next.
+            if (contactsLastFrame == 2)
+            {
+
+            }
+            // Otherwise, close the distance to the corner.
+            else
+            {
+                
+            }
+
+            float angleBetweenHits = Vector2.Angle(hit1.normal, hit2.normal);
+
+
+        }
+
+        contactsLastFrame = hitCount;
     }
 }
