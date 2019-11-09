@@ -5,6 +5,12 @@ using UnityEngine;
 public class HealthHandler : MonoBehaviour
 {
     public int health;
+    Rigidbody2D rb;
+
+    void Start()
+    {
+        rb = GetComponent<Rigidbody2D>();
+    }
 
     void Update()
     {
@@ -21,6 +27,6 @@ public class HealthHandler : MonoBehaviour
 
     void Dead()
     {
-        Destroy(gameObject);
+        rb.isKinematic = false;
     }
 }

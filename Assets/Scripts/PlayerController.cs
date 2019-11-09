@@ -21,16 +21,11 @@ public class PlayerController : MonoBehaviour
     private WeaponController weaponController;
     public Animator anim;
 
-    public float muzzleFlashTime;
-    float startTime;
-    GameObject flash;
+
 
     // Start is called before the first frame update
     void Start()
     {
-        flash = GameObject.Find("Muzzle Flash");
-        flash.SetActive(false);
-        Debug.Log(flash);
         rb = GetComponent<Rigidbody2D>();
         collisionHandler = GetComponent<CollisionHandler>();
         weaponController = GetComponent<WeaponController>();
@@ -72,18 +67,8 @@ public class PlayerController : MonoBehaviour
     void UpdateShooting()
     {
         if (Input.GetButton("Fire1"))
-        {               
-            weaponController.Shoot(anim);
-            flash.SetActive(true);
-            startTime = 0;
-        }
-        if (flash.activeSelf == true)
         {
-            startTime += Time.deltaTime;
-                if (startTime > muzzleFlashTime)
-                {
-                    flash.SetActive(false);
-                }
+            weaponController.Shoot(anim);
         }
     }
 }

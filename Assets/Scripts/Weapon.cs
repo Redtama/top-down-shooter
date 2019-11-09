@@ -14,10 +14,28 @@ public class Weapon : MonoBehaviour
     private AudioSource gunshotSound;
     private float originalPitch;
 
+    public float muzzleFlashTime;
+    float startTime;
+    GameObject flash;
+
     void Start()
     {
+        flash = GameObject.Find("Muzzle Flash");
+        flash.SetActive(false);
         gunshotSound = GetComponent<AudioSource>();
         originalPitch = gunshotSound.pitch;
+    }
+
+    void Update()
+    {
+        if (flash.activeSelf == true)
+        {
+            startTime += Time.deltaTime;
+            if (startTime > muzzleFlashTime)
+            {
+                flash.SetActive(false);
+            }
+        }
     }
 
     public void Shoot(Animator anim)
@@ -29,9 +47,12 @@ public class Weapon : MonoBehaviour
             Projectile projectile = Instantiate(projectilePrefab, firePoint.position, firePoint.rotation) as Projectile;
             projectile.speed = projectileSpeed;
 
+            flash.SetActive(true);
+            startTime = 0;
+
             gunshotSound.pitch = Random.Range(originalPitch - 0.03f, originalPitch + 0.03f);
             gunshotSound.Play();            
             anim.SetTrigger("onFire");
         }        
-    }    
+    }
 }

@@ -26,9 +26,12 @@ public class ZombieController : MonoBehaviour
     private CollisionHandler collisionHandler;
     private Transform player;
 
+    HealthHandler health;
+
     // Start is called before the first frame update
     void Start()
     {
+        health = GetComponent<HealthHandler>();
         rb = GetComponent<Rigidbody2D>();
         collisionHandler = GetComponent<CollisionHandler>();
         isIdle = true;
@@ -40,31 +43,34 @@ public class ZombieController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        LookForPlayer();
-        //check if zombie is already following the player
-        if (trackingPlayer)
+        if (health.health > 0)
         {
-            //if the player moves out of the zombies sight range, then make trackingPlayer false
-            if (Vector2.Distance(player.position, transform.position) > sightRange)
+            LookForPlayer();
+            //check if zombie is already following the player
+            if (trackingPlayer)
             {
-                trackingPlayer = false;
-                SetNewLocation();
+                //if the player moves out of the zombies sight range, then make trackingPlayer false
+                if (Vector2.Distance(player.position, transform.position) > sightRange)
+                {
+                    trackingPlayer = false;
+                    SetNewLocation();
+                }
+                else
+                {
+                    MoveToPlayer();
+                }
             }
             else
             {
-                MoveToPlayer();
-            }
-        }
-        else
-        {
-            //check if zombie is idle
-            if (isIdle)
-            {
-                UpdateIdle();
-            }
-            else
-            {
-                MoveToLocation();
+                //check if zombie is idle
+                if (isIdle)
+                {
+                    UpdateIdle();
+                }
+                else
+                {
+                    MoveToLocation();
+                }
             }
         }
     }

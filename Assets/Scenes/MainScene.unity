@@ -815,7 +815,6 @@ MonoBehaviour:
   blinkSpeed: 25
   input: {x: 0, y: 0}
   anim: {fileID: 0}
-  muzzleFlashTime: 0.01
 --- !u!58 &650176826
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -903,6 +902,7 @@ MonoBehaviour:
   secondaryWeapon: {fileID: 8419444049576302086, guid: 6bf0bfc2a75b87c4dbfb93746e257468,
     type: 3}
   minAimDistance: 2
+  muzzleFlashTime: 0.1
   equippedWeapon: {fileID: 0}
 --- !u!1 &677788421
 GameObject:

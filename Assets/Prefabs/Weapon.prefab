@@ -83,6 +83,7 @@ MonoBehaviour:
   fireRate: 3
   projectileSpeed: 20
   damage: 100
+  muzzleFlashTime: 0.1
 --- !u!82 &4690578164067597030
 AudioSource:
   m_ObjectHideFlags: 0
