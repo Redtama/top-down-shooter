@@ -351,6 +351,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   health: 100
+  colorChangeDuration: 0.1
 --- !u!58 &102223911838812162
 CircleCollider2D:
   m_ObjectHideFlags: 0
