@@ -87,11 +87,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 4329794794917039422, guid: d0181f63cc5927142af567ee18d99883,
-        type: 3}
-      propertyPath: m_Name
-      value: Weapon Machine Gun
-      objectReference: {fileID: 0}
     - target: {fileID: 2459849220975059589, guid: d0181f63cc5927142af567ee18d99883,
         type: 3}
       propertyPath: bulletSpeed
@@ -101,6 +96,11 @@ PrefabInstance:
         type: 3}
       propertyPath: fireRate
       value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 4329794794917039422, guid: d0181f63cc5927142af567ee18d99883,
+        type: 3}
+      propertyPath: m_Name
+      value: Weapon Machine Gun
       objectReference: {fileID: 0}
     - target: {fileID: 2442047433581816665, guid: d0181f63cc5927142af567ee18d99883,
         type: 3}
@@ -166,6 +166,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Pitch
       value: 0.9
+      objectReference: {fileID: 0}
+    - target: {fileID: 5949193320693738117, guid: d0181f63cc5927142af567ee18d99883,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5949193320693738117, guid: d0181f63cc5927142af567ee18d99883,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.315
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d0181f63cc5927142af567ee18d99883, type: 3}

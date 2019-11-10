@@ -10,11 +10,13 @@ public class WeaponController : MonoBehaviour
     public Weapon secondaryWeapon;
     public float minAimDistance;
 
-    [SerializeField]
     private Weapon equippedWeapon;
+    private Animator playerAnimator;
+    private float nextFire;
 
     void Start()
     {
+        playerAnimator = GetComponent<Animator>();
         EquipWeapon(primaryWeapon);
     }
 
@@ -28,11 +30,13 @@ public class WeaponController : MonoBehaviour
         equippedWeapon = Instantiate(weapon, weaponHold);
     }
 
-    public void Shoot(Animator anim)
+    public void Shoot()
     {
-        if (equippedWeapon != null)
+        if (equippedWeapon != null && Time.time > nextFire)
         {
-            equippedWeapon.Shoot(anim);
+            nextFire = Time.time + 1 / equippedWeapon.fireRate;
+            equippedWeapon.Shoot();
+            playerAnimator.SetTrigger("onFire");
         }
     }
 

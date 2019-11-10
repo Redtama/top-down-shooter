@@ -9,50 +9,42 @@ public class Weapon : MonoBehaviour
     public float fireRate;
     public float projectileSpeed;
     public int damage;
+    public float muzzleFlashDuration;
 
-    private float nextShotTime;
     private AudioSource gunshotSound;
     private float originalPitch;
-
-    public float muzzleFlashTime;
-    float startTime;
-    GameObject flash;
+    float muzzleFlashElapsedTime;
+    GameObject muzzleFlash;
 
     void Start()
     {
-        flash = GameObject.Find("Muzzle Flash");
-        flash.SetActive(false);
+        muzzleFlash = transform.Find("Muzzle Flash").gameObject;
+        muzzleFlash.SetActive(false);
         gunshotSound = GetComponent<AudioSource>();
         originalPitch = gunshotSound.pitch;
     }
 
     void Update()
     {
-        if (flash.activeSelf == true)
+        if (muzzleFlash.activeSelf == true)
         {
-            startTime += Time.deltaTime;
-            if (startTime > muzzleFlashTime)
+            muzzleFlashElapsedTime += Time.deltaTime;
+            if (muzzleFlashElapsedTime > muzzleFlashDuration)
             {
-                flash.SetActive(false);
+                muzzleFlash.SetActive(false);
             }
         }
     }
 
-    public void Shoot(Animator anim)
+    public void Shoot()
     {
-        if (Time.time > nextShotTime)
-        {
-            nextShotTime = Time.time + 1 / fireRate;
+        Projectile projectile = Instantiate(projectilePrefab, firePoint.position, firePoint.rotation) as Projectile;
+        projectile.speed = projectileSpeed;
 
-            Projectile projectile = Instantiate(projectilePrefab, firePoint.position, firePoint.rotation) as Projectile;
-            projectile.speed = projectileSpeed;
+        muzzleFlash.SetActive(true);
+        muzzleFlashElapsedTime = 0;
 
-            flash.SetActive(true);
-            startTime = 0;
-
-            gunshotSound.pitch = Random.Range(originalPitch - 0.03f, originalPitch + 0.03f);
-            gunshotSound.Play();            
-            anim.SetTrigger("onFire");
-        }        
+        gunshotSound.pitch = Random.Range(originalPitch - 0.03f, originalPitch + 0.03f);
+        gunshotSound.Play();
     }
 }
