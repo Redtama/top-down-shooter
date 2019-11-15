@@ -19,7 +19,7 @@ public class PlayerController : MonoBehaviour
     private float skinWidth = 0.01f;
     private CollisionHandler collisionHandler;
     private WeaponController weaponController;
-    public Animator anim;
+    private SpellController spellController;    
 
 
 
@@ -29,12 +29,12 @@ public class PlayerController : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         collisionHandler = GetComponent<CollisionHandler>();
         weaponController = GetComponent<WeaponController>();
+        spellController = GetComponent<SpellController>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        anim = GetComponent<Animator>();
         UpdateMovement();
         UpdateShooting();
 
@@ -46,7 +46,7 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Alpha2))
         {
             weaponController.EquipWeapon(weaponController.secondaryWeapon);
-        }
+        }        
     }
     
     void UpdateMovement()
@@ -69,6 +69,11 @@ public class PlayerController : MonoBehaviour
         if (Input.GetButton("Fire1"))
         {
             weaponController.Shoot();
+        }
+
+        if (Input.GetButton("Fire2"))
+        {
+            spellController.CastSpell();
         }
     }
 }
