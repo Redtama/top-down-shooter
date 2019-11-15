@@ -915,7 +915,7 @@ MonoBehaviour:
   cooldown: 1
   spell: {fileID: -5924485387971456010, guid: d8c22c84b9d3bd449a831a5a1e752ddd, type: 3}
   firePoint: {fileID: 1720765774}
-  spellSpeed: 5
+  spellSpeed: 8
 --- !u!1 &677788421
 GameObject:
   m_ObjectHideFlags: 0
